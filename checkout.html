@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lily's Shop | Checkout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-badge">L</div>
+        <div>
+          <p class="brand-name">Lily's Shop</p>
+          <span class="brand-subtitle">Order & Delivery</span>
+        </div>
+      </div>
+      <a href="./Lily SHOP.html" class="back-link">← Return to Shop</a>
+    </header>
+
+    <main class="checkout-layout">
+      <section class="checkout-card">
+        <p class="section-tag">Delivery Info</p>
+        <h2>Customer & Location Details</h2>
+
+        <form id="checkout-form" class="checkout-form">
+          <label>
+            Full Name
+            <input type="text" id="cust-name" required placeholder="e.g. Marie Claire" />
+          </label>
+
+          <label>
+            Phone Number (MTN / Airtel)
+            <input type="tel" id="cust-phone" required placeholder="0788000000" />
+          </label>
+
+          <label>
+            Delivery Location / Zone
+            <select id="delivery-zone" required>
+              <option value="0">Kigali City (0 RWF)</option>
+              <option value="1000">Ruyenzi / Gihara (1,000 RWF)</option>
+              <option value="3000">Huye / Butare (3,000 RWF)</option>
+              <option value="3000">Muhanga (3,000 RWF)</option>
+              <option value="3000">Nyanza (3,000 RWF)</option>
+              <option value="3000">Musanze / Ruhengeri (3,000 RWF)</option>
+              <option value="3000">Gicumbi (3,000 RWF)</option>
+              <option value="4000">Rubavu / Gisenyi (4,000 RWF)</option>
+              <option value="4000">Rusizi / Cyangugu (4,000 RWF)</option>
+              <option value="4000">Kayonza (4,000 RWF)</option>
+              <option value="4000">Rwamagana (4,000 RWF)</option>
+              <option value="4000">Nyagatare (4,000 RWF)</option>
+            </select>
+          </label>
+
+          <label>
+            Specific Address / Land Mark
+            <input type="text" id="cust-address" required placeholder="e.g. Near Kamonyi Market" />
+          </label>
+
+          <label>
+            Payment Method
+            <select id="payment-method" required>
+              <option value="momo">MTN Mobile Money / Airtel Money</option>
+              <option value="cod">Cash on Delivery</option>
+            </select>
+          </label>
+
+          <button type="submit" class="button-primary" style="margin-top: 10px;">Confirm Order</button>
+        </form>
+      </section>
+
+      <section class="checkout-card">
+        <p class="section-tag">Order Summary</p>
+        <h2>Your Selected Items</h2>
+        <div id="checkout-items" style="display: grid; gap: 10px; margin-bottom: 20px;"></div>
+
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span id="subtotal-val">0 RWF</span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery Fee:</span>
+          <span id="delivery-val">0 RWF</span>
+        </div>
+        <div class="summary-row total">
+          <span>Grand Total:</span>
+          <span id="grand-val" style="color: var(--rose-deep);">0 RWF</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="./script.js"></script>
+  <script>
+    function renderCheckoutSummary() {
+      const cart = getCart();
+      const itemsContainer = document.getElementById('checkout-items');
+      const subtotalEl = document.getElementById('subtotal-val');
+      const deliveryEl = document.getElementById('delivery-val');
+      const grandEl = document.getElementById('grand-val');
+      const zoneSelect = document.getElementById('delivery-zone');
+
+      if (!itemsContainer) return;
+
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = '<p style="color: var(--muted);">Your cart is empty.</p>';
+        subtotalEl.textContent = '0 RWF';
+        grandEl.textContent = '0 RWF';
+        return;
+      }
+
+      let subtotal = 0;
+      itemsContainer.innerHTML = cart.map(item => {
+        const itemTotal = parseRWF(item.price) * item.quantity;
+        subtotal += itemTotal;
+        return `
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 6px;">
+            <span>${item.title} (${item.size || 'M'}) x ${item.quantity}</span>
+            <strong>${itemTotal.toLocaleString()} RWF</strong>
+          </div>
+        `;
+      }).join('');
+
+      const deliveryFee = parseInt(zoneSelect.value, 10) || 0;
+      const grandTotal = subtotal + deliveryFee;
+
+      subtotalEl.textContent = `${subtotal.toLocaleString()} RWF`;
+      deliveryEl.textContent = `${deliveryFee.toLocaleString()} RWF`;
+      grandEl.textContent = `${grandTotal.toLocaleString()} RWF`;
+    }
+
+    document.getElementById('delivery-zone')?.addEventListener('change', renderCheckoutSummary);
+    document.addEventListener('DOMContentLoaded', renderCheckoutSummary);
+
+    document.getElementById('checkout-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('cust-name').value;
+      showToast(`Thank you, ${name}! Your order has been placed.`);
+      saveCart([]);
+      setTimeout(() => {
+        window.location.href = './Lily SHOP.html';
+      }, 1800);
+    });
+  </script>
+</body>
+</html>

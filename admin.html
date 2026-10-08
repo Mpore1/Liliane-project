@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lily's Shop | Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-badge" aria-hidden="true">L</div>
+        <div>
+          <p class="brand-name">Lily's Shop</p>
+          <span class="brand-subtitle">Store Admin Panel</span>
+          <div class="page-shell admin-shell"></div>  
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Main menu">
+        <a href="./Lily SHOP.html">Home</a>
+        <a href="./men.html">Men</a>
+        <a href="./women.html">Women</a>
+        <a href="./children.html">Children</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <a href="./Lily SHOP.html" class="button-fill">Back to Shop</a>
+      </div>
+    </header>
+
+    <section class="dashboard-stats" id="admin-stats" aria-label="Catalog overview"></section>
+
+    <main class="admin-layout">
+      <section class="admin-card">
+        <p class="section-tag">Add New Item</p>
+        <h2>Quick Product Entry</h2>
+
+        <form id="admin-form" class="admin-form">
+          <label>
+            Category
+            <select name="category" required>
+              <option value="men">Men</option>
+              <option value="women">Women</option>
+              <option value="children">Children</option>
+            </select>
+          </label>
+
+          <label>
+            Tag
+            <input type="text" name="tag" placeholder="Best seller, Active, New..." required />
+          </label>
+
+          <label>
+            Product Title
+            <input type="text" name="title" placeholder="e.g. Classic Boxer Set" required />
+          </label>
+
+          <label>
+            Description
+            <textarea name="text" rows="3" placeholder="Soft everyday fit..." required></textarea>
+          </label>
+
+          <label>
+            Price (RWF)
+            <input type="text" name="price" placeholder="e.g. 6000 RWF" required />
+          </label>
+
+          <label>
+            Image Relative Path / URL
+            <input type="text" name="imageUrl" placeholder="./img/Men/1.webp or https://..." />
+          </label>
+
+          <label>
+            Upload Local Image File
+            <input type="file" name="imageFile" accept="image/*" />
+          </label>
+
+          <button type="submit" class="button-primary">Add Product</button>
+        </form>
+      </section>
+
+      <section class="admin-card">
+        <p class="section-tag">Catalog Management</p>
+        <h2>Current Products</h2>
+        <div id="admin-preview" class="admin-preview"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./admin.js"></script>
+</body>
+</html>
